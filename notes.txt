@@ -1,0 +1,20 @@
+# for spot check
+python scripts/effectiveness/gspr_vllm.py \
+    --base-url http://127.0.0.1:19801/v1 \
+    --max-examples 3 \
+    --datasets harmbench_behaviors \
+    --save-raw-outputs
+
+# for GSPR
+CUDA_VISIBLE_DEVICES=7 vllm serve  teapotlid/GSPR2_Qwen2.5_GDPO_805_coldstart  --port 19801   --dtype half   --gpu-memory-utilization 0.45   --max-model-len auto
+python scripts/effectiveness/gspr_vllm.py \
+  --base-url http://127.0.0.1:19801/v1 \
+  --datasets jbb_behaviors xstest harmbench_behaviors advbench_behaviors advbench_strings
+
+
+# for qwenguard
+CUDA_VISIBLE_DEVICES=7 vllm serve  Qwen/Qwen3Guard-Gen-8B   --port 19802   --dtype half   --gpu-memory-utilization 0.45   --max-model-len auto
+python scripts/effectiveness/qwen3_guard_vllm.py \
+  --base-url http://127.0.0.1:19802/v1 \
+  --mode user_query \
+  --datasets jbb_behaviors xstest harmbench_behaviors advbench_behaviors advbench_strings

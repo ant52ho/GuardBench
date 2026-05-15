@@ -2,6 +2,9 @@ __all__ = [
     "benchmark_effectiveness",
     "benchmark_efficiency",
     "benchmark",
+    "BaseModerator",
+    "GSPRModerator",
+    "Qwen3GuardModerator",
     "CustomDataset",
     "download_all",
     "Report",
@@ -19,6 +22,7 @@ from .benchmark.effectiveness import benchmark as benchmark_effectiveness
 from .benchmark.efficiency import benchmark as benchmark_efficiency
 from .datasets import download_all
 from .datasets.custom_dataset import CustomDataset
+from .moderators import BaseModerator, GSPRModerator, Qwen3GuardModerator
 from .report import Report
 
 # Set environment variables ----------------------------------------------------

@@ -43,5 +43,8 @@ setuptools.setup(
         "evaluation",
         "benchmark",
     ],
+    extras_require={
+        "openai": ["openai>=1.40.0"],
+    },
     python_requires=">=3.10",
 )
