@@ -6,15 +6,54 @@ python scripts/effectiveness/gspr_vllm.py \
     --save-raw-outputs
 
 # for GSPR
-CUDA_VISIBLE_DEVICES=7 vllm serve  teapotlid/GSPR2_Qwen2.5_GDPO_805_coldstart  --port 19801   --dtype half   --gpu-memory-utilization 0.45   --max-model-len auto
+CUDA_VISIBLE_DEVICES=1 vllm serve  teapotlid/GSPR2_Qwen2.5_GDPO_805_coldstart  --port 19801   --dtype half   --gpu-memory-utilization 0.45   --max-model-len auto
+
 python scripts/effectiveness/gspr_vllm.py \
   --base-url http://127.0.0.1:19801/v1 \
-  --datasets jbb_behaviors xstest harmbench_behaviors advbench_behaviors advbench_strings
+  --datasets tech_hazard_qa niche_hazard_qa \
+  --save-raw-outputs
 
+  --datasets jbb_behaviors xstest harmbench_behaviors advbench_behaviors advbench_strings \
 
 # for qwenguard
-CUDA_VISIBLE_DEVICES=7 vllm serve  Qwen/Qwen3Guard-Gen-8B   --port 19802   --dtype half   --gpu-memory-utilization 0.45   --max-model-len auto
+CUDA_VISIBLE_DEVICES=1 vllm serve  Qwen/Qwen3Guard-Gen-8B   --port 19802   --dtype half   --gpu-memory-utilization 0.45   --max-model-len auto
+
 python scripts/effectiveness/qwen3_guard_vllm.py \
   --base-url http://127.0.0.1:19802/v1 \
   --mode user_query \
-  --datasets jbb_behaviors xstest harmbench_behaviors advbench_behaviors advbench_strings
+  --datasets tech_hazard_qa niche_hazard_qa \
+  --save-raw-outputs
+
+  --datasets jbb_behaviors xstest harmbench_behaviors advbench_behaviors advbench_strings \
+
+# llamaguard
+CUDA_VISIBLE_DEVICES=2 vllm serve  meta-llama/Llama-Guard-3-8B  --port 19803   --dtype half   --gpu-memory-utilization 0.45   --max-model-len auto
+
+python scripts/effectiveness/llama_guard_3_vllm.py \
+  --base-url http://127.0.0.1:19803/v1 \
+  --datasets tech_hazard_qa niche_hazard_qa \
+  --save-raw-outputs
+
+  --datasets jbb_behaviors xstest harmbench_behaviors advbench_behaviors advbench_strings \
+
+
+# gpt oss
+CUDA_VISIBLE_DEVICES=2 vllm serve  openai/gpt-oss-safeguard-20b  --port 19804     --gpu-memory-utilization 0.45   --max-model-len auto
+
+python scripts/effectiveness/gpt_oss_safeguard_vllm.py \
+  --base-url http://127.0.0.1:19804/v1 \
+  --datasets tech_hazard_qa niche_hazard_qa \
+  --save-raw-outputs
+  
+  --datasets jbb_behaviors xstest harmbench_behaviors advbench_behaviors advbench_strings \
+
+
+# gspr 1
+CUDA_VISIBLE_DEVICES=2 vllm serve teapotlid/GSPR_Qwen2.5  --port 19805   --dtype half   --gpu-memory-utilization 0.45   --max-model-len auto
+
+python scripts/effectiveness/gspr0_vllm.py \
+  --base-url http://127.0.0.1:19805/v1 \
+  --datasets strong_reject_instructions do_anything_now_questions \
+  --save-raw-outputs
+
+  --datasets jbb_behaviors xstest harmbench_behaviors advbench_behaviors advbench_strings tech_hazard_qa niche_hazard_qa \
